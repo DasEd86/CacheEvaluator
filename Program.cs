@@ -3,10 +3,10 @@ using System.Diagnostics;
 
 class Program {
     static void Main(string[] args) {
-        Debug.Assert(args.Length == 3, "First parameter: Access sequence separator: ,; Second parameter: Number of frames; Third parameter: Strategy 0 FIFO, 1 LIFO");
-        string[] accessSequence = args[0].Split(",");
+        Debug.Assert(args.Length == 3, "Parameters: First: 0 FIFO, 1 LIFO, 2 Random; Second: Number of frames; Third: Access sequence separator: ,");
+        int strategy = Int32.Parse(args[0]);
         int numberOfFrames = Int32.Parse(args[1]);
-        int strategy = Int32.Parse(args[2]);
+        string[] accessSequence = args[2].Split(",");
     
         CacheEvaluator evaluator = new CacheEvaluator(accessSequence, numberOfFrames);
         evaluator.setStrategy((Strategy)strategy);

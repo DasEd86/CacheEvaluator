@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-class LIFO: CacheStrategy {
+class LIFO: CacheStrategy<string> {
     private Stack<string> internalCache;
 
     public LIFO(int numberOfFrames): base(numberOfFrames) {

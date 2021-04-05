@@ -1,9 +1,7 @@
 using System;
 
-enum CACHE_STRATEGIES {FIFO, LIFO};
-
 public enum Strategy{
-    FIFO, LIFO
+    FIFO, LIFO, RANDOM
 };
 
 class CacheEvaluator {
@@ -16,17 +14,20 @@ class CacheEvaluator {
         this.numberOfFrames = numberOfFrames;
     }
 
-    public void setStrategy(Strategy strat) {
-        CacheStrategy strategy = null;
-        switch (strat) {
+    public void setStrategy(Strategy cacheStrategy) {
+        CacheStrategy<string> strategy = null;
+        switch (cacheStrategy) {
             case Strategy.FIFO:
                 strategy = new FIFO(numberOfFrames);
                 break;
             case Strategy.LIFO:
                 strategy = new LIFO(numberOfFrames);
                 break;
+            case Strategy.RANDOM:
+                strategy = new RandomCache(numberOfFrames);
+                break;
             default:
-                Console.WriteLine("Set stregy received invalid parameter: " + strat);
+                Console.WriteLine("setStrategy method received invalid parameter: " + cacheStrategy);
                 Environment.Exit(1);
                 break;
         }
@@ -43,7 +44,7 @@ class CacheEvaluator {
             Console.WriteLine("Read: " + key);
             Console.WriteLine("Cache before: " + this.cache.ToString());
 
-            if (this.cache.request(new CacheElement(key)) != null) {
+            if (this.cache.getCacheElement(key) != null) {
                 hits++;
             } else {
                 misses++;

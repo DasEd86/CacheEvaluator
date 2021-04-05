@@ -1,11 +1,13 @@
-class CacheElement {
-    private string name;
+class CacheElement<Key, Value> {
+    private Key key;
+    private Value value;
 
-    public CacheElement(string n) {
-        this.name = n;
+    public CacheElement(Key key, Value value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public string getKey() {
-        return this.name;
+    public Key getKey() {
+        return this.key;
     }
 }

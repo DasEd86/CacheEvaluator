@@ -1,36 +1,36 @@
-using System.Collections.Generic;
+using System;
 using System.Text;
+using System.Collections.Generic;
 
 class Cache {
     private int frames;
-    private Dictionary<string, CacheElement> cache;
-    private CacheStrategy strategy;
-    public Cache(int numberOfFrames, CacheStrategy cacheStrategy) {
+    private Dictionary<string, CacheElement<string, int>> cache;
+    private CacheStrategy<string> strategy;
+    public Cache(int numberOfFrames, CacheStrategy<string> cacheStrategy) {
         this.frames = numberOfFrames;
-        this.cache = new Dictionary<string, CacheElement>();
+        this.cache = new Dictionary<string, CacheElement<string, int>>();
         this.strategy = cacheStrategy;
     }
 
     // Returns element if already stored in cache
     // Returns null if element is not stored in cache
-    public CacheElement request(CacheElement cacheElement) {
-        this.strategy.keyWasAccessed(cacheElement.getKey());
-        if (this.cacheContainsKey(cacheElement)) {
-            CacheElement element;
-            this.cache.TryGetValue(cacheElement.getKey(), out element);
+    public CacheElement<string, int> getCacheElement(string cacheElementKey) {
+        this.strategy.keyWasAccessed(cacheElementKey);
+        if (this.cacheContainsKey(cacheElementKey)) {
+            CacheElement<string, int> element;
+            this.cache.TryGetValue(cacheElementKey, out element);
             return element;
         } else {
-            // Get key to replace and add new key
             if (this.cacheIsFull()) {
                 this.cache.Remove(this.strategy.getKeyToReplace());
             }
-            this.cache.Add(cacheElement.getKey(), cacheElement);
-            this.strategy.addKey(cacheElement.getKey());
+            this.cache.Add(cacheElementKey, new CacheElement<string, int>(cacheElementKey, new Random().Next()));
+            this.strategy.addKey(cacheElementKey);
             return null;
         }
     }
 
-    // Write current content of the cache
+    // Output current content of the cache
     public override string ToString() {
         StringBuilder stringBuilder = new StringBuilder();
         foreach (string key in this.cache.Keys) {
@@ -40,7 +40,7 @@ class Cache {
         return stringBuilder.ToString();
     }
 
-    public CacheStrategy getStrategy() {
+    public CacheStrategy<string> getStrategy() {
         return this.strategy;
     }
 
@@ -48,7 +48,7 @@ class Cache {
         return this.cache.Count >= this.frames;
     }
 
-    private bool cacheContainsKey(CacheElement cacheElement) {
-        return this.cache.ContainsKey(cacheElement.getKey());
+    private bool cacheContainsKey(string cacheElement) {
+        return this.cache.ContainsKey(cacheElement);
     }
 }

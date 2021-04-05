@@ -1,5 +1,5 @@
-abstract class CacheStrategy {
-    private int numberOfFrames;
+abstract class CacheStrategy<Key> {
+    protected int numberOfFrames;
 
     public CacheStrategy(int frames) {
         this.numberOfFrames = frames;
@@ -9,8 +9,8 @@ abstract class CacheStrategy {
     public abstract string getKeyToReplace();
 
     // Record that this key was accessed. Used by strategies such as LRU/LFU
-    public abstract void keyWasAccessed(string key);
+    public abstract void keyWasAccessed(Key key);
     
     // Adds new key to the cache
-    public abstract void addKey(string key);
+    public abstract void addKey(Key key);
 }

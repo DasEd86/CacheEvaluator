@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-class FIFO: CacheStrategy {
+class FIFO: CacheStrategy<string> {
     private Queue<string> internalCache;
 
     public FIFO(int numberOfFrames): base(numberOfFrames) {
