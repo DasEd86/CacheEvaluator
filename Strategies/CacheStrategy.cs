@@ -6,7 +6,7 @@ abstract class CacheStrategy<Key> {
     }
 
     // Returns the key that has to be replaced in case of cache miss
-    public abstract string getKeyToReplace();
+    public abstract Key getKeyToReplace();
 
     // Record that this key was accessed. Used by strategies such as LRU/LFU
     public abstract void keyWasAccessed(Key key);
