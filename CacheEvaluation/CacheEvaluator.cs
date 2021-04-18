@@ -4,8 +4,8 @@ public enum Strategy{
     FIFO, LIFO, RANDOM
 };
 
-class CacheEvaluator {
-    private Cache cache;
+public class CacheEvaluator {
+    private Cache<string, int> cache;
     private string[] accessSequence;
     private int numberOfFrames;
 
@@ -18,20 +18,20 @@ class CacheEvaluator {
         CacheStrategy<string> strategy = null;
         switch (cacheStrategy) {
             case Strategy.FIFO:
-                strategy = new FIFO(numberOfFrames);
+                strategy = new FIFO<string>(numberOfFrames);
                 break;
             case Strategy.LIFO:
-                strategy = new LIFO(numberOfFrames);
+                strategy = new LIFO<string>(numberOfFrames);
                 break;
             case Strategy.RANDOM:
-                strategy = new RandomCache(numberOfFrames);
+                strategy = new RandomCache<string>(numberOfFrames);
                 break;
             default:
                 Console.WriteLine("setStrategy method received invalid parameter: " + cacheStrategy);
                 Environment.Exit(1);
                 break;
         }
-        this.cache = new Cache(numberOfFrames, strategy);
+        this.cache = new Cache<string, int>(numberOfFrames, strategy);
     }
 
     public void start() {

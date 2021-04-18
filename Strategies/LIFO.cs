@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 
-class LIFO: CacheStrategy<string> {
-    private Stack<string> internalCache;
+public class LIFO<Key>: CacheStrategy<Key> {
+    private Stack<Key> internalCache;
 
     public LIFO(int numberOfFrames): base(numberOfFrames) {
-        this.internalCache = new Stack<string>();
+        this.internalCache = new Stack<Key>();
     }
 
-    public override string getKeyToReplace() {
+    public override Key getKeyToReplace() {
         return this.internalCache.Pop();
     }
 
-    public override void keyWasAccessed(string key) { }
+    public override void keyWasAccessed(Key key) { }
 
-    public override void addKey(string key) {
+    public override void addKey(Key key) {
         this.internalCache.Push(key);
     }
 }

@@ -1,4 +1,4 @@
-class CacheElement<Key, Value> {
+public class CacheElement<Key, Value> {
     private Key key;
     private Value value;
 

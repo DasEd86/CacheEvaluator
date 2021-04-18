@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 
-class FIFO: CacheStrategy<string> {
-    private Queue<string> internalCache;
+public class FIFO<Key>: CacheStrategy<Key> {
+    private Queue<Key> internalCache;
 
     public FIFO(int numberOfFrames): base(numberOfFrames) {
-        this.internalCache = new Queue<string>();
+        this.internalCache = new Queue<Key>();
     }
 
-    public override string getKeyToReplace() {
+    public override Key getKeyToReplace() {
         return this.internalCache.Dequeue();
     }
 
-    public override void keyWasAccessed(string key) { }
+    public override void keyWasAccessed(Key key) { }
 
-    public override void addKey(string key) {
+    public override void addKey(Key key) {
         this.internalCache.Enqueue(key);
     }
 }
