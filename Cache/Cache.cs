@@ -1,31 +1,30 @@
-using System;
 using System.Text;
 using System.Collections.Generic;
 
-public class Cache<Key, Value> {
+public class Cache<K, V> {
     private int numberOfFrames;
-    private Dictionary<Key, CacheElement<Key, Value>> cache;
-    private CacheStrategy<Key> strategy;
-    public Cache(int numberOfFrames, CacheStrategy<Key> cacheStrategy) {
+    private Dictionary<K, CacheElement<K, V>> cache;
+    private CacheStrategy<K> strategy;
+    public Cache(int numberOfFrames, CacheStrategy<K> cacheStrategy) {
         this.numberOfFrames = numberOfFrames;
-        this.cache = new Dictionary<Key, CacheElement<Key, Value>>();
+        this.cache = new Dictionary<K, CacheElement<K, V>>();
         this.strategy = cacheStrategy;
     }
 
     // Request an element by key from the cache
     // Returns the element if it is already stored in the cache
     // Returns null if element was not stored in the cache
-    public CacheElement<Key, Value> getCacheElement(Key cacheElementKey) {
-        this.strategy.keyWasAccessed(cacheElementKey);
+    public CacheElement<K, V> getCacheElement(K cacheElementKey) {
         if (this.cacheContainsKey(cacheElementKey)) {
-            CacheElement<Key, Value> element;
+            CacheElement<K, V> element;
             this.cache.TryGetValue(cacheElementKey, out element);
+            this.strategy.keyWasAccessed(cacheElementKey);
             return element;
         } else {
             if (this.cacheIsFull()) {
                 this.cache.Remove(this.strategy.getKeyToReplace());
             }
-            this.cache.Add(cacheElementKey, new CacheElement<Key, Value>(cacheElementKey, default(Value)));
+            this.cache.Add(cacheElementKey, new CacheElement<K, V>(cacheElementKey, default(V)));
             this.strategy.addKey(cacheElementKey);
             return null;
         }
@@ -34,14 +33,13 @@ public class Cache<Key, Value> {
     // Output current content of the cache
     public override string ToString() {
         StringBuilder stringBuilder = new StringBuilder();
-        foreach (Key key in this.cache.Keys) {
-            stringBuilder.Append(key);
-            stringBuilder.Append(" ");
+        foreach (K key in this.cache.Keys) {
+            stringBuilder.Append($"{key} ");
         }
         return stringBuilder.ToString();
     }
 
-    public CacheStrategy<Key> getStrategy() {
+    public CacheStrategy<K> getStrategy() {
         return this.strategy;
     }
 
@@ -49,7 +47,7 @@ public class Cache<Key, Value> {
         return this.cache.Count >= this.numberOfFrames;
     }
 
-    private bool cacheContainsKey(Key cacheElement) {
+    private bool cacheContainsKey(K cacheElement) {
         return this.cache.ContainsKey(cacheElement);
     }
 }

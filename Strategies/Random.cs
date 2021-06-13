@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 
-public class RandomCache<Key>: CacheStrategy<Key> {
-    private List<Key> internalCache;
+public class RandomCache<K>: CacheStrategy<K> {
+    private List<K> internalCache;
 
     public RandomCache(int numberOfFrames): base(numberOfFrames) {
-        this.internalCache = new List<Key>(numberOfFrames);
+        this.internalCache = new List<K>(numberOfFrames);
     }
 
-    public override Key getKeyToReplace() {
-        Key key = this.internalCache[new Random().Next(this.numberOfFrames)];
+    public override K getKeyToReplace() {
+        K key = this.internalCache[new Random().Next(this.numberOfFrames)];
         this.internalCache.Remove(key);
         return key;
     }
 
-    public override void keyWasAccessed(Key key) { }
+    public override void keyWasAccessed(K key) { }
 
-    public override void addKey(Key key) {
+    public override void addKey(K key) {
         this.internalCache.Add(key);
     }
 }

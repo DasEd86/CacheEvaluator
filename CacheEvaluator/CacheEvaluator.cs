@@ -1,7 +1,7 @@
 using System;
 
 public enum Strategy{
-    FIFO, LIFO, RANDOM
+    FIFO, LIFO, RANDOM, LFU
 };
 
 public class CacheEvaluator {
@@ -26,35 +26,36 @@ public class CacheEvaluator {
             case Strategy.RANDOM:
                 strategy = new RandomCache<string>(numberOfFrames);
                 break;
-            default:
-                Console.WriteLine("setStrategy method received invalid parameter: " + cacheStrategy);
-                Environment.Exit(1);
+            case Strategy.LFU:
+                strategy = new LFU<string>(numberOfFrames);
                 break;
+            default:
+                throw new Exception($"setStrategy() received invalid parameter: {cacheStrategy}");
         }
         this.cache = new Cache<string, int>(numberOfFrames, strategy);
     }
 
     public void start() {
-        Console.WriteLine("Evaluating strategy: " + this.cache.getStrategy());
+        Console.WriteLine($"Evaluate: {this.cache.getStrategy()}");
     
         int hits = 0;
         int misses = 0;
 
         foreach (string key in this.accessSequence) {
-            Console.WriteLine("Read: " + key);
-            Console.WriteLine("Cache before: " + this.cache.ToString());
+            Console.WriteLine($"Read: {key}");
+            Console.WriteLine($"Cache before: {this.cache.ToString()}");
 
             if (this.cache.getCacheElement(key) != null) {
                 hits++;
             } else {
                 misses++;
             }
-            Console.WriteLine("Cache after: " + this.cache.ToString());
-            Console.WriteLine("Cache hits: " + hits);
-            Console.WriteLine("Cache misses: " + misses);
+            Console.WriteLine($"Cache after: {this.cache.ToString()}");
+            Console.WriteLine($"Cache hits: {hits}");
+            Console.WriteLine($"Cache misses: {misses}");
             Console.WriteLine("------------");
         }
 
-        Console.WriteLine("Ratio: " + (float) hits / misses);
+        Console.WriteLine($"Ratio: {(float) hits / misses}");
     }
 }

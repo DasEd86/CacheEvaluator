@@ -1,13 +1,12 @@
-public class CacheElement<Key, Value> {
-    private Key key;
-    private Value value;
+public class CacheElement<K, V> {
+    public K Key
+    {get;}
 
-    public CacheElement(Key key, Value value) {
-        this.key = key;
-        this.value = value;
-    }
+    public V Value
+    {get;}
 
-    public Key getKey() {
-        return this.key;
+    public CacheElement(K key, V value) {
+        Key = key;
+        Value = value;
     }
 }

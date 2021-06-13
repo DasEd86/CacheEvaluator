@@ -1,4 +1,4 @@
-public abstract class CacheStrategy<Key> {
+public abstract class CacheStrategy<K> {
     protected int numberOfFrames;
 
     public CacheStrategy(int frames) {
@@ -6,11 +6,11 @@ public abstract class CacheStrategy<Key> {
     }
 
     // Returns key to be replaced in case of cache miss
-    public abstract Key getKeyToReplace();
+    public abstract K getKeyToReplace();
 
     // Records that key was accessed
-    public abstract void keyWasAccessed(Key key);
+    public abstract void keyWasAccessed(K key);
     
     // Adds key to cache
-    public abstract void addKey(Key key);
+    public abstract void addKey(K key);
 }
